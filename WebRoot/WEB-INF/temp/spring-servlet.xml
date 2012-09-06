@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:s="http://www.springframework.org/schema/security"
+	xmlns:oauth="http://www.springframework.org/schema/security/oauth2" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:task="http://www.springframework.org/schema/task"
+	
+	xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+		http://www.springframework.org/schema/security/oauth2 http://www.springframework.org/schema/security/spring-security-oauth2-1.0.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
+		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+	<bean id="environmentVariablesConfiguration"
+		class="org.jasypt.encryption.pbe.config.EnvironmentStringPBEConfig">
+		<property name="algorithm" value="PBEWithMD5AndDES" />
+		<property name="password" value="bingki" />
+	</bean>
+
+	<bean id="configurationEncryptor" class="org.jasypt.encryption.pbe.StandardPBEStringEncryptor">
+		<property name="config" ref="environmentVariablesConfiguration" />
+	</bean>
+
+	<bean id="propertyConfigurer"
+		class="org.jasypt.spring31.properties.EncryptablePropertyPlaceholderConfigurer">
+		<constructor-arg ref="configurationEncryptor" />
+		<property name="locations">
+			<list>
+				<value>classpath:jdbc.properties</value>
+			</list>
+		</property>
+	</bean>
+
+
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		destroy-method="close">
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<!-- 配置初始化大小、最小、最大 -->
+		<property name="initialSize" value="1" />
+		<property name="minIdle" value="1" />
+		<property name="maxActive" value="40" />
+		<!-- 配置获取连接等待超时的时间 -->
+		<property name="maxWait" value="60000" />
+		<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+		<property name="timeBetweenEvictionRunsMillis" value="60000" />
+		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+		<property name="minEvictableIdleTimeMillis" value="300000" />
+		<property name="validationQuery" value="SELECT 'x'" />
+		<property name="testWhileIdle" value="true" />
+		<property name="testOnBorrow" value="false" />
+		<property name="testOnReturn" value="false" />
+		<!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
+		<property name="poolPreparedStatements" value="false" />
+		<property name="maxPoolPreparedStatementPerConnectionSize" value="20" />
+		<!-- 配置监控统计拦截的filters
+		<property name="filters" value="com.alibaba.druid.filter.stat.StatFilter" />
+		<property name="connectionProperties" value="druid.stat.mergeSql=true" /> 
+		 -->
+	</bean>
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">
+					org.hibernate.dialect.MySQLDialect
+				</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<prop key="hibernate.jdbc.batch_size">30</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.format_sql">true</prop>
+			</props>
+		</property>
+		<property name="mappingResources">
+			<list>
+			<value>com/top/model/Users.hbm.xml</value>
+			<value>com/top/model/Authory.hbm.xml</value>
+			<value>com/top/model/Role.hbm.xml</value></list>
+		</property>
+	</bean>
+	
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	<bean id="transactionInterceptor"
+		class="org.springframework.transaction.interceptor.TransactionInterceptor">
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="transactionAttributes">
+			<props>
+				<prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="is*">PROPAGATION_REQUIRED,readOnly</prop>
+				<prop key="save*">PROPAGATION_REQUIRED</prop>
+				<prop key="add*">PROPAGATION_REQUIRED</prop>
+				<prop key="del*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="*">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean>
+	<bean
+		class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+		<property name="beanNames">
+			<list>
+				<value>*Service</value>
+			</list>
+		</property>
+		<property name="interceptorNames">
+			<list>
+				<value>transactionInterceptor</value>
+			</list>
+		</property>
+	</bean>
+
+	<context:component-scan base-package="com/top" />
+	<task:annotation-driven />
+
+	<s:global-method-security secured-annotations="enabled"
+		jsr250-annotations="enabled">
+	</s:global-method-security>
+	<bean
+		class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler" />
+	<s:http pattern="/css/**" security="none" />
+	<s:http pattern="/login.jsp*" security="none" />
+	<s:http pattern="/index.jsp*" security="none" />
+	<s:http pattern="/common/**" security="none" />
+	<s:http pattern="/toplogin.htm" security="none" />
+	<s:http access-denied-page="/common/accessDenied.jsp">
+		<s:intercept-url pattern='/**' access='ROLE_SELLER,ROLE_ADMIN' />
+		<s:form-login default-target-url="/page/index.jsp"
+			login-page="/login.jsp" authentication-failure-url="/login.jsp?error=true" />
+		<s:custom-filter ref="oauth2ClientFilter" after="EXCEPTION_TRANSLATION_FILTER" />
+
+	</s:http>
+
+	<bean id="messageSource"
+		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<property name="basename" value="classpath:messages_zh_CN"></property>
+	</bean>
+	<bean id="loggerListener"
+		class="org.springframework.security.authentication.event.LoggerListener" />
+
+	<!-- 认证配置, 使用userDetailsService提供的用户信息 -->
+	<s:authentication-manager alias="authenticationManager">
+		<s:authentication-provider user-service-ref="userDetailsService">
+			<!-- <s:password-encoder hash="md5"> <s:salt-source user-property="username" 
+				/> </s:password-encoder> -->
+		</s:authentication-provider>
+	</s:authentication-manager>
+
+	<!-- 项目实现的用户查询服务 -->
+	<bean id="userDetailsService" class="com.top.service.impl.UserDetailsServiceImpl" />
+
+
+	<oauth:client id="oauth2ClientFilter" />
+	<oauth:resource id="taobao" type="authorization_code"
+		client-id="21136386" client-secret="eb91d4467c836a2dbb8898e4083a3684"
+		authentication-scheme="query" access-token-uri="https://oauth.taobao.com/token"
+		user-authorization-uri="https://oauth.taobao.com/authorize"
+		token-name="oauth_token" client-authentication-scheme="form" />
+
+	<bean id="facebookController"
+		class="com.top.action.FacebookController">
+		<property name="facebookRestTemplate">
+			<oauth:rest-template resource="taobao">
+				<property name="messageConverters">
+					<list>
+						<bean
+							class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+							<property name="supportedMediaTypes">
+								<list>
+									<bean class="org.springframework.http.MediaType">
+										<!--facebook sends its json as text/javascript for some reason -->
+										<constructor-arg value="text" />
+										<constructor-arg value="javascript" />
+									</bean>
+									<bean class="org.springframework.http.MediaType">
+										<constructor-arg value="application" />
+										<constructor-arg value="json" />
+									</bean>
+								</list>
+							</property>
+						</bean>
+					</list>
+				</property>
+			</oauth:rest-template>
+		</property>
+	</bean>
+	
+
+</beans>

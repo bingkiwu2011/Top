@@ -1,0 +1,10 @@
+SoldsDetail 异步通知交易TASK ，判断交易详情  
+
+ProductNotify 通知信息处理交易完成的记录
+
+
+
+异常分析
+
+主动通知 HTTP错误码 http://open.taobao.com/doc/detail.htm?id=1065#s6
+
