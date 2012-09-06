@@ -10,7 +10,6 @@
 */
 package com.top.action;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,11 +30,12 @@ import com.taobao.api.internal.util.WebUtils;
 import com.taobao.api.request.IncrementCustomerPermitRequest;
 import com.taobao.api.response.IncrementCustomerPermitResponse;
 import com.top.common.Constants;
+import com.top.exception.MyException;
 import com.top.util.TopUtil;
 
 /** 
- * @ClassName: Back 
- * @Description: TODO(这里用一句话描述这个类的作用) 
+ * @ClassName: 
+ * @Description: TOP前后台登录
  * @author bingki 
  * @date 2012-8-29 下午3:39:48  
  */
@@ -64,7 +64,7 @@ public class TopOauth2Login {
 	}
 	
 	@RequestMapping("/back")
-	public ModelAndView loginBack(HttpServletRequest req, HttpServletResponse response) {
+	public ModelAndView loginBack(HttpServletRequest req, HttpServletResponse response) throws MyException {
 		ModelAndView model = new ModelAndView();
 		Map<String, String> param = new HashMap<String, String>();
 		param.put("grant_type", "authorization_code");
@@ -73,6 +73,9 @@ public class TopOauth2Login {
 		param.put("client_secret", Constants.BACK_APP_SECRET);
 		param.put("redirect_uri", Constants.redirectUrlPrefix);
 		param.put("scope", "item");
+		if(req.getParameter("code")==null||req.getParameter("code").length()<=0){
+			throw new MyException("error authorize code!");
+		}
 		String responseJson="";
 		try {
 			responseJson = WebUtils.doPost("https://oauth.taobao.com/token", param, 3000, 3000);
@@ -91,7 +94,8 @@ public class TopOauth2Login {
 			}
 			model.setViewName("../index");
 			return model;
-		} catch (IOException e1) {
+		} catch (Exception e1) {
+			log.error(e1);
 			e1.printStackTrace();
 		} 
 		model.setViewName("../common/error");

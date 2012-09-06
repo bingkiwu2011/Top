@@ -14,8 +14,11 @@
 		<s:custom-filter ref="validateCodeAuthenticationFilter"
 			before="FORM_LOGIN_FILTER" />
 		<s:logout logout-success-url="/index.jsp" />
-		<s:intercept-url pattern='/rest/**' access='ROLE_USER,ROLE_ADMIN' />
-		<s:intercept-url pattern='/page/**' access='ROLE_USER,ROLE_ADMIN' />
+		<s:intercept-url pattern='/page/**'
+			access='ROLE_CUSTOMER,ROLE_SELLER,ROLE_ADMIN' />
+		<s:intercept-url pattern='/admin/**' access='ROLE_ADMIN' />
+		<s:intercept-url pattern='/customer/**' access='ROLE_CUSTOMER,ROLE_ADMIN' />
+		<s:intercept-url pattern='/seller/**' access='ROLE_SELLER,ROLE_ADMIN' />
 		<s:intercept-url pattern="/**"
 			access="IS_AUTHENTICATED_ANONYMOUSLY" />
 		<s:form-login default-target-url="/page/index.jsp"
@@ -24,6 +27,7 @@
 			<s:concurrency-control max-sessions="1"
 				expired-url="/login.jsp?error=expired" />
 		</s:session-management>
+		<s:logout invalidate-session="true" logout-url="/logout" logout-success-url="/index.jsp"/>
 	</s:http>
 	<bean id="messageSource"
 		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
