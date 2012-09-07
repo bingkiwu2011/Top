@@ -5,11 +5,11 @@
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <div id="header" class="span12">
 	<div id="title">
-	    <h1>QuickStart示例<small>--TodoList应用演示</small>
+	    <h1>积分商盟<small>--TodoList应用演示</small>
 	    <sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_CUSTOMER','ROLE_SELLER')">
 			<div class="btn-group pull-right">
 				<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-					<i class="icon-user"></i> <shiro:principal property="name"/>
+					<i class="icon-user"></i> <sec:authentication property="name"/>
 					<span class="caret"></span>
 				</a>
 			
@@ -18,7 +18,6 @@
 						<li><a href="${ctx}/admin/user">Admin Users</a></li>
 						<li class="divider"></li>
 					</sec:authorize>
-					<li><a href="${ctx}/profile">Edit Profile</a></li>
 					<li><a href="${ctx}/j_spring_security_logout">Logout</a></li>
 				</ul>
 			</div>

@@ -24,9 +24,17 @@
 			</list>
 		</property>
 	</bean>
+	<bean id="dataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
+		<constructor-arg ref="dataSourceSpied" />
+		<property name="logFormatter">
+			<bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter">
+				<property name="loggingType" value="MULTI_LINE" />
+				<property name="sqlPrefix" value="SQL:::" />
+			</bean>
+		</property>
+	</bean>
 
-
-	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+	<bean id="dataSourceSpied" class="com.alibaba.druid.pool.DruidDataSource"
 		destroy-method="close">
 		<property name="url" value="${jdbc.url}" />
 		<property name="username" value="${jdbc.username}" />
@@ -47,11 +55,11 @@
 		<property name="testOnReturn" value="false" />
 		<!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
 		<property name="poolPreparedStatements" value="false" />
-		<property name="maxPoolPreparedStatementPerConnectionSize" value="20" />
-		<!-- 配置监控统计拦截的filters
-		<property name="filters" value="com.alibaba.druid.filter.stat.StatFilter" />
-		<property name="connectionProperties" value="druid.stat.mergeSql=true" /> 
-		 -->
+		<property name="maxPoolPreparedStatementPerConnectionSize"
+			value="20" />
+		<!-- 配置监控统计拦截的filters <property name="filters" value="com.alibaba.druid.filter.stat.StatFilter" 
+			/> <property name="connectionProperties" value="druid.stat.mergeSql=true" 
+			/> -->
 	</bean>
 	<bean id="sessionFactory"
 		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
@@ -65,18 +73,19 @@
 				</prop>
 				<prop key="hibernate.hbm2ddl.auto">update</prop>
 				<prop key="hibernate.jdbc.batch_size">30</prop>
-				<prop key="hibernate.show_sql">true</prop>
-				<prop key="hibernate.format_sql">true</prop>
+				<prop key="hibernate.show_sql">false</prop>
+				<prop key="hibernate.format_sql">false</prop>
 			</props>
 		</property>
 		<property name="mappingResources">
 			<list>
-			<value>com/top/model/Users.hbm.xml</value>
-			<value>com/top/model/Authory.hbm.xml</value>
-			<value>com/top/model/Role.hbm.xml</value></list>
+				<value>com/top/model/Users.hbm.xml</value>
+				<value>com/top/model/Authory.hbm.xml</value>
+				<value>com/top/model/Role.hbm.xml</value>
+			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="transactionManager"
 		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory" />
@@ -111,7 +120,8 @@
 	</bean>
 
 	<context:component-scan base-package="com.top">
-		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
 	</context:component-scan>
 	<task:annotation-driven />
 </beans>
