@@ -10,40 +10,26 @@
 */
 package com.top.dao.impl;
 
-import java.util.List;
-
 import javax.annotation.Resource;
 
-import org.hibernate.SessionFactory;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
 import com.top.dao.IUsersDAO;
-import com.top.model.Users;
+import com.top.model.jpa.Users;
 /** 
  * @ClassName: UsersService 
  * @Description: TODO(这里用一句话描述这个类的作用) 
  * @author bingki 
  * @date 2011-12-16 下午04:43:45  
  */
-@Repository
-public class UsersDAO extends HibernateDaoSupport implements IUsersDAO {
-	@Resource 
-    public void setSessionFactoryOverride(SessionFactory sessionFactory)   
-    {   
-        super.setSessionFactory(sessionFactory);   
-    }  
+@Component
+public class UsersDAO   {
+	@Resource
+	private IUsersDAO iUsersDAO;
 	
-	@SuppressWarnings("rawtypes")
 	public Users getUserByUsername(String username) {
-		Users user=new Users();
-		user.setUsername(username);
 		//getHibernateTemplate().setCacheQueries(true);//存入二级缓存
-		List list=getHibernateTemplate().findByExample(user);
-		if(null!=list&&list.size()>0)
-			return  (Users) list.get(0);
-		else
-			return  null;
+		return iUsersDAO.findByUsername(username);
 	}
 
 }

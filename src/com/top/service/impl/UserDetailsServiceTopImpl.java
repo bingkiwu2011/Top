@@ -13,8 +13,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.top.dao.impl.UsersDAO;
-import com.top.model.Authory;
-import com.top.model.Users;
+import com.top.model.jpa.Authory;
+import com.top.model.jpa.Users;
 
 @Transactional(readOnly = true)
 public class UserDetailsServiceTopImpl implements UserDetailsService {

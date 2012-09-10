@@ -1,9 +1,9 @@
 package com.top.dao;
 
+import org.springframework.data.repository.Repository;
 
-import com.top.model.Users;
+import com.top.model.jpa.Users;
 
-
-public interface IUsersDAO {   
-    public Users getUserByUsername(String username);
+public interface IUsersDAO extends Repository<Users, Long>{   
+    public Users findByUsername(String username);
 }  

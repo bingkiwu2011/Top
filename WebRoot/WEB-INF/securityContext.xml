@@ -23,7 +23,7 @@
 			access="IS_AUTHENTICATED_ANONYMOUSLY" />
 		<s:form-login default-target-url="/page/index.jsp"
 			login-page="/login.jsp" authentication-failure-url="/login.jsp?error=true" />
-		<s:session-management invalid-session-url="/common/sessionout.jsp">
+		<s:session-management invalid-session-url="/index.jsp">
 			<s:concurrency-control max-sessions="1"
 				expired-url="/login.jsp?error=expired" />
 		</s:session-management>

@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.top.model.Users;
+import com.top.model.jpa.Users;
+
 
 /*可以通过redirect/forward:url方式转到另一个Action进行连续的处理。
  可以通过redirect:url 防止表单重复提交 。
