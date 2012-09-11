@@ -137,5 +137,8 @@
 	<!-- hibernate validator -->
 	<bean id="validator"
 		class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
-
+	<!-- <bean id="demoEhcacheManager"
+		class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+		<property name="configLocation" value="classpath:/cache/ehcache-hibernate-local.xml" />
+	</bean> -->
 </beans>

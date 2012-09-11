@@ -12,7 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.top.dao.impl.UsersDAO;
+import com.top.dao.UsersDAO;
 import com.top.model.jpa.Authory;
 import com.top.model.jpa.Users;
 
@@ -34,7 +34,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username)
 			throws UsernameNotFoundException, DataAccessException {
 
-		Users user = userDao.getUserByUsername(username);
+		Users user = userDao.findByUsername(username);
 		if (user == null) {
 			throw new UsernameNotFoundException("用户" + username + " 不存在");
 		}
