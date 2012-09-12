@@ -37,9 +37,7 @@ public class ValidateCodeUsernamePasswordAuthenticationFilter extends UsernamePa
 			password = "";
 		}
 		username = username.trim();
-
 		UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(username, isAdminUser ? password : "unused");
-
 		HttpSession session = request.getSession(false);
 
 		if (session != null || getAllowSessionCreation()) {
@@ -55,7 +53,7 @@ public class ValidateCodeUsernamePasswordAuthenticationFilter extends UsernamePa
 
 	protected void checkValidateCode(HttpServletRequest request) {
 		if (request.getSession().getAttribute(Constants.SESSION_USERS) == null) {
-			throw new AuthenticationServiceException("未授权！");
+			//throw new AuthenticationServiceException("未授权！");
 		}
 	}
 

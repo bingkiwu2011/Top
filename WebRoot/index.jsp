@@ -33,7 +33,7 @@
 					</c:otherwise>
 				</c:choose>
 			</div>
-			<div class="span4">
+			<div class="span3">
 				sdss滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答滴答
 			</div>
 		</div>

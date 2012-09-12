@@ -13,21 +13,23 @@
 	<s:http auto-config='true' access-denied-page="/common/accessDenied.jsp">
 		<s:custom-filter ref="validateCodeAuthenticationFilter"
 			before="FORM_LOGIN_FILTER" />
-		<s:logout logout-success-url="/index.jsp" />
+		<s:logout logout-success-url="/index" />
 		<s:intercept-url pattern='/page/**'
 			access='ROLE_CUSTOMER,ROLE_SELLER,ROLE_ADMIN' />
-		<s:intercept-url pattern='/admin/**' access='ROLE_ADMIN' />
-		<s:intercept-url pattern='/customer/**' access='ROLE_CUSTOMER,ROLE_ADMIN' />
+		<s:intercept-url pattern='/WEB-INF/admin/**' access='ROLE_ADMIN' />
+ 		<s:intercept-url pattern='/customer/**' access='ROLE_CUSTOMER,ROLE_ADMIN' />
+		<s:intercept-url pattern='/customer-right-page/**' access='ROLE_CUSTOMER,ROLE_ADMIN' /> 
 		<s:intercept-url pattern='/seller/**' access='ROLE_SELLER,ROLE_ADMIN' />
+		<s:intercept-url pattern='/seller-right-page/**' access='ROLE_SELLER,ROLE_ADMIN' />
 		<s:intercept-url pattern="/**"
 			access="IS_AUTHENTICATED_ANONYMOUSLY" />
-		<s:form-login default-target-url="/page/index.jsp"
-			login-page="/login.jsp" authentication-failure-url="/login.jsp?error=true" />
-		<s:session-management invalid-session-url="/index.jsp">
+		<s:form-login default-target-url="/page/index"
+			login-page="/login" authentication-failure-url="/login.jsp?error=true" />
+		<s:session-management invalid-session-url="/index">
 			<s:concurrency-control max-sessions="1"
 				expired-url="/login.jsp?error=expired" />
 		</s:session-management>
-		<s:logout invalidate-session="true" logout-url="/logout" logout-success-url="/index.jsp"/>
+		<s:logout invalidate-session="true" logout-url="/logout" logout-success-url="/index"/>
 	</s:http>
 	<bean id="messageSource"
 		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">

@@ -5,7 +5,7 @@
 
 	
 
-<div class="span12 well pricehover">
+<div class="span9 well pricehover  offset1">
 	<div id="title">
 		<h1>
 			标题标题<small>--TodoList应用演示</small>
@@ -17,10 +17,10 @@
 				<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span></a> <a class="brand" href="#">Project name</a>
 				<div class="nav-collapse">
 					<ul class="nav">
-						<li id="index" ><a href="index.jsp" >Home</a></li>
-						<li id="login"><a href="login.jsp" >Link</a></li>
-						<li><a href="#">Link</a></li>
-						<li><a href="#">Link</a></li>
+						<li id="index" ><a href="${ctx}/index" >Home</a></li>
+						<li id="login"><a href="${ctx}/login" >login</a></li>
+						<li id="customer"><a href="${ctx}/customer">customer</a></li>
+						<li id="seller"><a href="${ctx}/seller">seller</a></li>
 						<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b> </a>
 							<ul class="dropdown-menu">
 								<li><a href="#">Action</a></li>

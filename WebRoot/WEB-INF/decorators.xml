@@ -4,7 +4,13 @@
 	<excludes>
 		<pattern>/static/*</pattern>
 		<pattern>/api/*</pattern>
+		<pattern>/customer-right-page/*</pattern>
+		<pattern>/seller-right-page/*</pattern>
 	</excludes>
+	
+	<decorator name="admin" page="admin-main.jsp">
+		<pattern>/WEB-INF/admin/*</pattern>
+	</decorator>
 	
 	<decorator name="default" page="default.jsp">
 		<pattern>/*</pattern>
