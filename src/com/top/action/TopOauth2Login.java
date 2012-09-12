@@ -58,7 +58,7 @@ public class TopOauth2Login {
 				e.printStackTrace();
 			}
 		}
-		model.setViewName("../common/error");
+		model.setViewName("/common/error");
 		return model;
 		
 	}
@@ -92,13 +92,18 @@ public class TopOauth2Login {
 					System.out.println("主动通知业务授权失败!");
 				}
 			}
-			model.setViewName("../index");
+			model.addObject("j_username", jsonObject.getString("taobao_user_nick"));
+			model.addObject("j_password", "unused");
+			model.addObject("salt", "hellobingki");//添加salt ，防止浏览器直接登录
+			model.setViewName("redirect:/j_spring_security_check");
 			return model;
 		} catch (Exception e1) {
 			log.error(e1);
 			e1.printStackTrace();
-		} 
-		model.setViewName("../common/error");
+		}
+		//http://bingki.vicp.net:8081/Top/j_spring_security_check?j_password=unused&j_username=bingki
+		//http://bingki.vicp.net:8081/Top/j_spring_security_check?j_password=1&j_username=amadeus
+		model.setViewName("/common/error");
 		return model;
 	}
 	

@@ -15,8 +15,6 @@ import com.top.common.Constants;
 
 public class ValidateCodeUsernamePasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-	private boolean postOnly = true;
-	private boolean allowEmptyValidateCode = false;
 	public static final String SPRING_SECURITY_LAST_USERNAME_KEY = "SPRING_SECURITY_LAST_USERNAME";
 
 	@Override
@@ -26,9 +24,11 @@ public class ValidateCodeUsernamePasswordAuthenticationFilter extends UsernamePa
 			username = "";
 		}
 		// 是否管理员直接登录
-		boolean isAdminUser = username.equals("amadeus");
-		if (!isAdminUser && postOnly && !request.getMethod().equals("POST")) {
-			throw new AuthenticationServiceException("Authentication method not supported: " + request.getMethod());
+		if (request.getParameter("salt") == null || !request.getParameter("salt").equals(Constants.LOGINSALT)) {
+			System.out.println(111);
+			throw new AuthenticationServiceException("Authentication  not supported: " + username);
+		} else {
+			System.out.println(222);
 		}
 
 		String password = obtainPassword(request);
@@ -37,7 +37,7 @@ public class ValidateCodeUsernamePasswordAuthenticationFilter extends UsernamePa
 			password = "";
 		}
 		username = username.trim();
-		UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(username, isAdminUser ? password : "unused");
+		UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(username,  password);
 		HttpSession session = request.getSession(false);
 
 		if (session != null || getAllowSessionCreation()) {
@@ -45,33 +45,15 @@ public class ValidateCodeUsernamePasswordAuthenticationFilter extends UsernamePa
 		}
 
 		setDetails(request, authRequest);
-		if (!isAdminUser && !isAllowEmptyValidateCode())
-			checkValidateCode(request);
+		checkValidateCode(request);
 
 		return this.getAuthenticationManager().authenticate(authRequest);
 	}
 
 	protected void checkValidateCode(HttpServletRequest request) {
 		if (request.getSession().getAttribute(Constants.SESSION_USERS) == null) {
-			//throw new AuthenticationServiceException("未授权！");
+			// throw new AuthenticationServiceException("未授权！");
 		}
-	}
-
-	public boolean isPostOnly() {
-		return postOnly;
-	}
-
-	@Override
-	public void setPostOnly(boolean postOnly) {
-		this.postOnly = postOnly;
-	}
-
-	public boolean isAllowEmptyValidateCode() {
-		return allowEmptyValidateCode;
-	}
-
-	public void setAllowEmptyValidateCode(boolean allowEmptyValidateCode) {
-		this.allowEmptyValidateCode = allowEmptyValidateCode;
 	}
 
 }

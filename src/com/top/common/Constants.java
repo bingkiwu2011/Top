@@ -30,6 +30,6 @@ public final class Constants {
     public static SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
     public static SimpleDateFormat df2 = new SimpleDateFormat("yyyyMMdd"); 
     
-    
+    public static String LOGINSALT="hellobingki";
     
 } 

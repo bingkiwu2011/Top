@@ -2,14 +2,6 @@
 <%@ page pageEncoding="UTF-8"%>
 
 <html>
-<head>
-<title>登录</title>
-<script type="text/javascript">
-	jQuery(function($) {
-		$("#login").addClass("active");
-	});
-</script>
-</head>
 
 <body onload="document.f.j_username.focus();">
 
