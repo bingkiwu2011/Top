@@ -3,10 +3,14 @@ package com.top.model.jpa;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 /**
  * AuthoryId entity. @author MyEclipse Persistence Tools
  */
 @Embeddable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class AuthoryId implements java.io.Serializable {
 
 	// Fields

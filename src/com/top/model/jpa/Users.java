@@ -1,79 +1,52 @@
 package com.top.model.jpa;
 
-import java.util.HashSet;
-import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * Users entity. @author MyEclipse Persistence Tools
  */
 @Entity
 @Table(name = "users", catalog = "top")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Users implements java.io.Serializable {
 
 	// Fields
 
 	/**
-	* @Fields serialVersionUID : TODO(用一句话描述这个变量表示什么)
-	*/
+	 * @Fields serialVersionUID : TODO(用一句话描述这个变量表示什么)
+	 */
 	private static final long serialVersionUID = 1L;
-	private Integer userId;
+	private Long userId;
 	private String username;
 	private String password;
 	private String name;
 	private String phone;
 	private Integer enabled;
-	private Integer integral;
-	private Set<Authory> authories = new HashSet<Authory>(0);
+	private Long level;
+	private String uid;
 
-	// Constructors
-
-	/** default constructor */
-	public Users() {
-	}
-
-	/** minimal constructor */
-	public Users(String username, String password, String name, String phone, Integer enabled, Integer integral) {
-		this.username = username;
-		this.password = password;
-		this.name = name;
-		this.phone = phone;
-		this.enabled = enabled;
-		this.integral = integral;
-	}
-
-	/** full constructor */
-	public Users(String username, String password, String name, String phone, Integer enabled, Integer integral, Set<Authory> authories) {
-		this.username = username;
-		this.password = password;
-		this.name = name;
-		this.phone = phone;
-		this.enabled = enabled;
-		this.integral = integral;
-		this.authories = authories;
-	}
-
-	// Property accessors
+	private Authory authory;
+	
 	@Id
-	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "user_id", unique = true, nullable = false)
-	public Integer getUserId() {
+	public Long getUserId() {
 		return this.userId;
 	}
 
-	public void setUserId(Integer userId) {
+	public void setUserId(Long userId) {
 		this.userId = userId;
 	}
 
-	@Column(name = "username", nullable = false, length = 60)
+	@Column(name = "username", nullable = false, length = 30)
 	public String getUsername() {
 		return this.username;
 	}
@@ -82,7 +55,7 @@ public class Users implements java.io.Serializable {
 		this.username = username;
 	}
 
-	@Column(name = "password", nullable = false, length = 50)
+	@Column(name = "password", nullable = false, length = 100)
 	public String getPassword() {
 		return this.password;
 	}
@@ -91,7 +64,7 @@ public class Users implements java.io.Serializable {
 		this.password = password;
 	}
 
-	@Column(name = "name", nullable = false, length = 20)
+	@Column(name = "name", nullable = true, length = 20)
 	public String getName() {
 		return this.name;
 	}
@@ -100,7 +73,7 @@ public class Users implements java.io.Serializable {
 		this.name = name;
 	}
 
-	@Column(name = "phone", nullable = false, length = 11)
+	@Column(name = "phone", nullable = true, length = 11)
 	public String getPhone() {
 		return this.phone;
 	}
@@ -118,22 +91,36 @@ public class Users implements java.io.Serializable {
 		this.enabled = enabled;
 	}
 
-	@Column(name = "integral", nullable = false)
-	public Integer getIntegral() {
-		return this.integral;
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "users")
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+	public Authory getAuthory() {
+		return authory;
 	}
 
-	public void setIntegral(Integer integral) {
-		this.integral = integral;
+	public void setAuthory(Authory authory) {
+		this.authory = authory;
+	}
+	
+	
+	@Column(name = "level", nullable = false)
+	public Long getLevel() {
+		return level;
 	}
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "users")
-	public Set<Authory> getAuthories() {
-		return this.authories;
+	
+
+	public void setLevel(Long level) {
+		this.level = level;
 	}
 
-	public void setAuthories(Set<Authory> authories) {
-		this.authories = authories;
+
+	@Column(name = "uid", nullable = true, length = 50)
+	public String getUid() {
+		return uid;
+	}
+
+	public void setUid(String uid) {
+		this.uid = uid;
 	}
 
 }

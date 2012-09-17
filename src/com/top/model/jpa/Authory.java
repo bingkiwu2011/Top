@@ -1,14 +1,19 @@
 package com.top.model.jpa;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
+import static javax.persistence.GenerationType.IDENTITY;
+
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * Authory entity. @author MyEclipse Persistence Tools
@@ -16,39 +21,46 @@ import javax.persistence.Table;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "authory", catalog = "top")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Authory implements java.io.Serializable {
 
 	// Fields
 
-	private AuthoryId id;
+	private int id;
+	private Long user_id;
+	private int role_id;
+
 	private Users users;
 	private Role role;
 
-	// Constructors
-
-	/** default constructor */
-	public Authory() {
-	}
-
-	/** full constructor */
-	public Authory(AuthoryId id, Users users, Role role) {
-		this.id = id;
-		this.users = users;
-		this.role = role;
-	}
-
-	// Property accessors
-	@EmbeddedId
-	@AttributeOverrides({ @AttributeOverride(name = "roleId", column = @Column(name = "role_id", nullable = false)), @AttributeOverride(name = "userId", column = @Column(name = "user_id", nullable = false)) })
-	public AuthoryId getId() {
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "id", unique = true, nullable = false)
+	public int getId() {
 		return this.id;
 	}
 
-	public void setId(AuthoryId id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	public Long getUser_id() {
+		return user_id;
+	}
+
+	public int getRole_id() {
+		return role_id;
+	}
+
+	public void setUser_id(Long user_id) {
+		this.user_id = user_id;
+	}
+
+	public void setRole_id(int role_id) {
+		this.role_id = role_id;
+	}
+
+	@OneToOne
 	@JoinColumn(name = "user_id", nullable = false, insertable = false, updatable = false)
 	public Users getUsers() {
 		return this.users;

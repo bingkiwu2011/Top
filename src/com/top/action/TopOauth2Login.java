@@ -13,6 +13,7 @@ package com.top.action;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -30,7 +31,11 @@ import com.taobao.api.internal.util.WebUtils;
 import com.taobao.api.request.IncrementCustomerPermitRequest;
 import com.taobao.api.response.IncrementCustomerPermitResponse;
 import com.top.common.Constants;
+import com.top.dao.UsersDAO;
 import com.top.exception.MyException;
+import com.top.model.jpa.Users;
+import com.top.service.IUsersService;
+import com.top.util.ThreeDESCode;
 import com.top.util.TopUtil;
 
 /** 
@@ -42,6 +47,8 @@ import com.top.util.TopUtil;
 @Controller
 public class TopOauth2Login {
 	private static Log log = LogFactory.getLog(TopOauth2Login.class);
+	@Resource
+	private IUsersService usersService;
 	
 	@RequestMapping("/front")
 	public ModelAndView loginFront(HttpServletRequest req, HttpServletResponse response) {
@@ -79,23 +86,31 @@ public class TopOauth2Login {
 		String responseJson="";
 		try {
 			responseJson = WebUtils.doPost("https://oauth.taobao.com/token", param, 3000, 3000);
-			System.out.println(responseJson);
+			//System.out.println(responseJson);
 			JSONObject jsonObject=JSON.parseObject(responseJson);
 			if (jsonObject.getString("access_token").length() > 0) {
 				req.getSession().setAttribute(Constants.SESSION_USERS, jsonObject.getString("taobao_user_nick"));
 				req.getSession().setAttribute(Constants.SESSION_TOKEN, jsonObject.getString("access_token"));
+				Users user=usersService.findByUsername(jsonObject.getString("taobao_user_nick"));
+				if(user==null){
+					//如果空，即表示之前没有登录过，需要添加用户
+					user =new Users();
+					user.setUsername(jsonObject.getString("taobao_user_nick"));
+					usersService.addUsers(jsonObject.getString("access_token"));
+				}
+				model.addObject("j_username", user.getUsername());
+				model.addObject("j_password", ThreeDESCode.encryptThreeDESECB(user.getUsername()));
+				/*model.addObject("salt", "hellobingki");//添加salt ，防止浏览器直接登录
 				if (permit(Constants.BACK_APP_KEY, Constants.BACK_APP_SECRET, jsonObject.getString("access_token"))) {
 					System.out.println("主动通知业务授权成功!");
 
 					System.out.println("开始接受通知!");
 				} else {
 					System.out.println("主动通知业务授权失败!");
-				}
+				}*/
 			}
-			model.addObject("j_username", jsonObject.getString("taobao_user_nick"));
-			model.addObject("j_password", "unused");
-			model.addObject("salt", "hellobingki");//添加salt ，防止浏览器直接登录
-			model.setViewName("redirect:/j_spring_security_check");
+			
+			model.setViewName("rediretlogin");
 			return model;
 		} catch (Exception e1) {
 			log.error(e1);

@@ -51,9 +51,7 @@ public class UserDetailsServiceTopImpl implements UserDetailsService {
 	 */
 	private Set<GrantedAuthority> obtainGrantedAuthorities(Users user) {
 		Set<GrantedAuthority> authSet = new HashSet<GrantedAuthority>();
-		for (Authory authory : user.getAuthories()) {
-			authSet.add(new SimpleGrantedAuthority(authory.getRole().getName()));
-		}
+		authSet.add(new SimpleGrantedAuthority(user.getAuthory().getRole().getName()));
 		return authSet;
 	}
 

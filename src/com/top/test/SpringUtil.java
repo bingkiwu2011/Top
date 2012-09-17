@@ -4,6 +4,8 @@ package com.top.test;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.top.service.IUsersService;
+
 
 /**
  * Spring工具类，提供取得Spring配置文件中定义的Bean的方法<br>
@@ -61,7 +63,7 @@ public class SpringUtil {
 	}
 
 	public static void main(String[] args) {
-		//ILoginService i=(ILoginService)SpringUtil.getInstance().getBean("loginService");
+		IUsersService i=(IUsersService)SpringUtil.getInstance().getBean("usersService");
 		//IPrizeService prizeService=(IPrizeService)SpringUtil.getInstance().getBean("prizeService");
 		
 		

@@ -18,14 +18,6 @@
 			expression="org.springframework.stereotype.Controller" />
 	</context:component-scan>
 
-	<!-- 拦截器 -->
-	<mvc:interceptors>
-		<!-- 多个拦截器,顺序执行 -->
-		<mvc:interceptor>
-			<mvc:mapping path="/rest/*" /><!-- 如果不配置或/*,将拦截所有的Controller -->
-			<bean class="com.top.interceptor.SystemInterceptor"></bean>
-		</mvc:interceptor>
-	</mvc:interceptors>
 	<!-- Default ViewResolver -->
 	<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">

@@ -16,8 +16,6 @@ import com.top.dao.UsersDAO;
 import com.top.model.jpa.Authory;
 import com.top.model.jpa.Users;
 
-
-
 @Transactional(readOnly = true)
 public class UserDetailsServiceImpl implements UserDetailsService {
 
@@ -31,8 +29,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	/**
 	 * 获取用户Details信息的回调函数.
 	 */
-	public UserDetails loadUserByUsername(String username)
-			throws UsernameNotFoundException, DataAccessException {
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException {
 
 		Users user = userDao.findByUsername(username);
 		if (user == null) {
@@ -45,10 +42,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		boolean credentialsNonExpired = true;
 		boolean accountNonLocked = true;
 
-		UserDetails userdetails = new org.springframework.security.core.userdetails.User(
-				user.getUsername(), user.getPassword(), user.getEnabled()==1?true:false,
-				accountNonExpired, credentialsNonExpired, accountNonLocked,
-				grantedAuths);
+		UserDetails userdetails = new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), user.getEnabled() == 1 ? true : false, accountNonExpired, credentialsNonExpired, accountNonLocked, grantedAuths);
 
 		return userdetails;
 	}
@@ -58,9 +52,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	 */
 	private Set<GrantedAuthority> obtainGrantedAuthorities(Users user) {
 		Set<GrantedAuthority> authSet = new HashSet<GrantedAuthority>();
-		for(Authory authory:user.getAuthories() ){
-			authSet.add(new SimpleGrantedAuthority(authory.getRole().getName()));
-		}
+		authSet.add(new SimpleGrantedAuthority(user.getAuthory().getRole().getName()));
 		return authSet;
 	}
 

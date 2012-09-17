@@ -1,4 +1,4 @@
-package com.top.test;
+package com.top.util;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -13,7 +13,11 @@ public class ThreeDESCode {
 
 	private static String charSet = "utf-8";
 
-
+	/**
+	 * @Description: 加密
+	 * @author bingki
+	 * @date 2012-8-27 下午6:25:49
+	 */
 	public static String encryptThreeDESECB(String src) throws Exception {
 		BASE64Encoder encoder = new BASE64Encoder();
 		String string = encoder.encode(src.getBytes(charSet));
@@ -25,9 +29,13 @@ public class ThreeDESCode {
 		cipher.init(Cipher.ENCRYPT_MODE, securekey);
 		byte[] b = cipher.doFinal(string.getBytes());
 		return encoder.encode(b);
-
 	}
 
+	/**
+	 * @Description: 解密
+	 * @author bingki
+	 * @date 2012-8-27 下午6:25:49
+	 */
 	public static String decryptThreeDESECB(String src) throws Exception {
 		BASE64Decoder decoder = new BASE64Decoder();
 		byte[] bytesrc = decoder.decodeBuffer(src);
@@ -44,10 +52,10 @@ public class ThreeDESCode {
 
 	public static void main(String[] args) {
 		try {
-			String OldStr = "撒旦撒旦撒qwqwq111";
+			String OldStr = "customer";
 			String encode = ThreeDESCode.encryptThreeDESECB(OldStr);
-			System.out.println("加密:"+encode);
-			System.out.println("解密："+ThreeDESCode.decryptThreeDESECB(encode));
+			System.out.println("加密:" + encode);
+			System.out.println("解密：" + ThreeDESCode.decryptThreeDESECB(encode));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

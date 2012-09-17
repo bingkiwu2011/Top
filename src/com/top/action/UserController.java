@@ -47,10 +47,10 @@ public class UserController {
 	public List<Users> login4(String username) {
 		System.out.println("json:" + username);
 		List<Users> users = new ArrayList<Users>();
-		users.add(new Users("李逵", "123456", "成都市", "123", 1, 23));
-		users.add(new Users("李逵2", "123456", "成都市", "123", 1, 23));
-		users.add(new Users("李逵3", "123456", "成都市", "123", 1, 23));
-		users.add(new Users("李逵4", "123456", "成都市", "123", 1, 23));
+		//users.add(new Users("李逵", "123456", "成都市", "123", 1, 23));
+		//users.add(new Users("李逵2", "123456", "成都市", "123", 1, 23));
+		//users.add(new Users("李逵3", "123456", "成都市", "123", 1, 23));
+		//users.add(new Users("李逵4", "123456", "成都市", "123", 1, 23));
 		return users;
 
 	}

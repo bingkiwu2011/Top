@@ -4,8 +4,6 @@ import java.util.Iterator;
 
 import javax.annotation.security.RolesAllowed;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RolesAllowed({ "ROLE_ADMIN" })
 public class AdminUserController {
-	private static Log log = LogFactory.getLog(AdminUserController.class);
 
 	@SuppressWarnings("rawtypes")
 	@RequestMapping("/bingki")

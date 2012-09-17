@@ -10,7 +10,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.TextEscapeUtils;
-
 import com.top.common.Constants;
 
 public class ValidateCodeUsernamePasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
@@ -24,11 +23,14 @@ public class ValidateCodeUsernamePasswordAuthenticationFilter extends UsernamePa
 			username = "";
 		}
 		// 是否管理员直接登录
-		if (request.getParameter("salt") == null || !request.getParameter("salt").equals(Constants.LOGINSALT)) {
-			System.out.println(111);
-			throw new AuthenticationServiceException("Authentication  not supported: " + username);
-		} else {
-			System.out.println(222);
+		boolean isAdminUser = username.equals("amadeus");
+		if (!isAdminUser) {
+			if (request.getParameter("salt") == null || !request.getParameter("salt").equals(Constants.LOGINSALT)) {
+				throw new AuthenticationServiceException("Authentication salt 错误: " + username);
+			}
+			if (request.getSession().getAttribute(Constants.SESSION_USERS) == null) {
+				// throw new AuthenticationServiceException("Authentication session-users 为空！");
+			}
 		}
 
 		String password = obtainPassword(request);
@@ -37,7 +39,7 @@ public class ValidateCodeUsernamePasswordAuthenticationFilter extends UsernamePa
 			password = "";
 		}
 		username = username.trim();
-		UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(username,  password);
+		UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(username, isAdminUser ? password : "unused");
 		HttpSession session = request.getSession(false);
 
 		if (session != null || getAllowSessionCreation()) {
@@ -45,15 +47,9 @@ public class ValidateCodeUsernamePasswordAuthenticationFilter extends UsernamePa
 		}
 
 		setDetails(request, authRequest);
-		checkValidateCode(request);
 
 		return this.getAuthenticationManager().authenticate(authRequest);
 	}
 
-	protected void checkValidateCode(HttpServletRequest request) {
-		if (request.getSession().getAttribute(Constants.SESSION_USERS) == null) {
-			// throw new AuthenticationServiceException("未授权！");
-		}
-	}
 
 }
