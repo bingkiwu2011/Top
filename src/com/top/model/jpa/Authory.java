@@ -18,24 +18,25 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 /**
  * Authory entity. @author MyEclipse Persistence Tools
  */
-@SuppressWarnings("serial")
 @Entity
 @Table(name = "authory", catalog = "top")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Authory implements java.io.Serializable {
 
-	// Fields
-
+	private static final long serialVersionUID = 3519617071526800625L;
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "id", unique = true, nullable = false)
 	private int id;
 	private Long user_id;
 	private int role_id;
 
+	@OneToOne
+	@JoinColumn(name = "user_id", nullable = false, insertable = false, updatable = false)
 	private Users users;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "role_id", nullable = false, insertable = false, updatable = false)
 	private Role role;
 
-	@Id
-	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "id", unique = true, nullable = false)
 	public int getId() {
 		return this.id;
 	}
@@ -60,8 +61,6 @@ public class Authory implements java.io.Serializable {
 		this.role_id = role_id;
 	}
 
-	@OneToOne
-	@JoinColumn(name = "user_id", nullable = false, insertable = false, updatable = false)
 	public Users getUsers() {
 		return this.users;
 	}
@@ -70,8 +69,6 @@ public class Authory implements java.io.Serializable {
 		this.users = users;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "role_id", nullable = false, insertable = false, updatable = false)
 	public Role getRole() {
 		return this.role;
 	}

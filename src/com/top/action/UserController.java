@@ -1,8 +1,11 @@
 package com.top.action;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -14,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.top.model.jpa.Users;
-
+import com.top.service.IUsersService;
 
 /*可以通过redirect/forward:url方式转到另一个Action进行连续的处理。
  可以通过redirect:url 防止表单重复提交 。
@@ -23,9 +26,10 @@ import com.top.model.jpa.Users;
  return "redirect:/index.jsp";*/
 
 @Controller
-@RequestMapping("/user.htm")
-//@RolesAllowed({ "ROLE_SELLER", "ROLE_ADMIN" })
 public class UserController {
+	@Resource
+	IUsersService usersService;
+
 	@RequestMapping(params = "method=add")
 	public String login(@ModelAttribute("user") Users user, HttpServletRequest req, HttpServletResponse response) {
 		// 此处调用服务层进行相应的业务操作
@@ -42,15 +46,18 @@ public class UserController {
 	}
 
 	// json
-	@RequestMapping(params = "method=add4")
+	@RequestMapping("newsellers")
 	@ResponseBody
-	public List<Users> login4(String username) {
-		System.out.println("json:" + username);
+	public List<Users> newsellers() {
 		List<Users> users = new ArrayList<Users>();
-		//users.add(new Users("李逵", "123456", "成都市", "123", 1, 23));
-		//users.add(new Users("李逵2", "123456", "成都市", "123", 1, 23));
-		//users.add(new Users("李逵3", "123456", "成都市", "123", 1, 23));
-		//users.add(new Users("李逵4", "123456", "成都市", "123", 1, 23));
+		List<Users> users2 = usersService.findTop10Sellers();
+		Users u;
+		for(Users uu:users2){
+			u=new Users();
+			u.setUsername(uu.getUsername());
+			u.setLevel(uu.getLevel());
+			users.add(u);
+		}
 		return users;
 
 	}

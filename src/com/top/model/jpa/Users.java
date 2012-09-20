@@ -1,9 +1,12 @@
 package com.top.model.jpa;
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -16,28 +19,34 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  */
 @Entity
 @Table(name = "users", catalog = "top")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Users implements java.io.Serializable {
 
-	// Fields
-
-	/**
-	 * @Fields serialVersionUID : TODO(用一句话描述这个变量表示什么)
-	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -5740016950903957915L;
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "id", unique = true, nullable = false)
+	private Integer id;
+	@Column(name = "user_id", unique = true, nullable = false)
 	private Long userId;
+	@Column(name = "username", nullable = false, length = 30)
 	private String username;
+	@Column(name = "password", nullable = false, length = 100)
 	private String password;
+	@Column(name = "name", nullable = true, length = 20)
 	private String name;
+	@Column(name = "phone", nullable = true, length = 11)
 	private String phone;
+	@Column(name = "enabled", nullable = false)
 	private Integer enabled;
+	@Column(name = "level", nullable = false)
 	private Long level;
+	@Column(name = "uid", nullable = true, length = 50)
 	private String uid;
 
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "users")
+	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private Authory authory;
-	
-	@Id
-	@Column(name = "user_id", unique = true, nullable = false)
+
 	public Long getUserId() {
 		return this.userId;
 	}
@@ -46,7 +55,6 @@ public class Users implements java.io.Serializable {
 		this.userId = userId;
 	}
 
-	@Column(name = "username", nullable = false, length = 30)
 	public String getUsername() {
 		return this.username;
 	}
@@ -55,7 +63,6 @@ public class Users implements java.io.Serializable {
 		this.username = username;
 	}
 
-	@Column(name = "password", nullable = false, length = 100)
 	public String getPassword() {
 		return this.password;
 	}
@@ -64,7 +71,6 @@ public class Users implements java.io.Serializable {
 		this.password = password;
 	}
 
-	@Column(name = "name", nullable = true, length = 20)
 	public String getName() {
 		return this.name;
 	}
@@ -73,7 +79,6 @@ public class Users implements java.io.Serializable {
 		this.name = name;
 	}
 
-	@Column(name = "phone", nullable = true, length = 11)
 	public String getPhone() {
 		return this.phone;
 	}
@@ -82,7 +87,6 @@ public class Users implements java.io.Serializable {
 		this.phone = phone;
 	}
 
-	@Column(name = "enabled", nullable = false)
 	public Integer getEnabled() {
 		return this.enabled;
 	}
@@ -91,8 +95,6 @@ public class Users implements java.io.Serializable {
 		this.enabled = enabled;
 	}
 
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "users")
-	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	public Authory getAuthory() {
 		return authory;
 	}
@@ -100,27 +102,29 @@ public class Users implements java.io.Serializable {
 	public void setAuthory(Authory authory) {
 		this.authory = authory;
 	}
-	
-	
-	@Column(name = "level", nullable = false)
+
 	public Long getLevel() {
 		return level;
 	}
-
-	
 
 	public void setLevel(Long level) {
 		this.level = level;
 	}
 
-
-	@Column(name = "uid", nullable = true, length = 50)
 	public String getUid() {
 		return uid;
 	}
 
 	public void setUid(String uid) {
 		this.uid = uid;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 }

@@ -22,22 +22,18 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  */
 @Entity
 @Table(name = "role", catalog = "top")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Role implements java.io.Serializable {
 
-	// Fields
-
-	/**
-	 * @Fields serialVersionUID : TODO(用一句话描述这个变量表示什么)
-	 */
 	private static final long serialVersionUID = 7932950469945046422L;
-	private Integer id;
-	private String name;
-	private Set<Authory> authories = new HashSet<Authory>(0);
-
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id", unique = true, nullable = false)
+	private Integer id;
+	@Column(name = "name", nullable = false, length = 20)
+	private String name;
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "id")
+	private Set<Authory> authories = new HashSet<Authory>(0);
+
 	public Integer getId() {
 		return this.id;
 	}
@@ -46,7 +42,6 @@ public class Role implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@Column(name = "name", nullable = false, length = 20)
 	public String getName() {
 		return this.name;
 	}
@@ -55,7 +50,6 @@ public class Role implements java.io.Serializable {
 		this.name = name;
 	}
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "id")
 	public Set<Authory> getAuthories() {
 		return this.authories;
 	}
