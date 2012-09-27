@@ -8,7 +8,7 @@
 * @date 2012-8-28 下午3:02:53 
 *@version 1.0 
 */
-package com.top.Notify;
+package com.top.api.Notify;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

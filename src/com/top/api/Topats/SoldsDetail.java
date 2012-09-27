@@ -8,16 +8,13 @@
  * @date 2012-8-27 下午6:25:49 
  *@version 1.0 
  */
-package com.top.Topats;
+package com.top.api.Topats;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import com.alibaba.fastjson.JSON;
 import com.taobao.api.DefaultTaobaoClient;
@@ -26,10 +23,8 @@ import com.taobao.api.domain.Order;
 import com.taobao.api.domain.Task;
 import com.taobao.api.internal.util.AtsUtils;
 import com.taobao.api.request.TopatsResultGetRequest;
-import com.taobao.api.request.TopatsTradesSoldGetRequest;
 import com.taobao.api.response.TopatsResultGetResponse;
-import com.taobao.api.response.TopatsTradesSoldGetResponse;
-import com.top.Notify.NotifyUtil;
+import com.top.api.service.TopApi;
 import com.top.common.Constants;
 import com.top.exception.MyException;
 
@@ -41,28 +36,15 @@ import com.top.exception.MyException;
  */
 public class SoldsDetail {
 	private TaobaoClient client = new DefaultTaobaoClient(Constants.URL, Constants.BACK_APP_KEY, Constants.BACK_APP_SECRET);
-	private static Log log = LogFactory.getLog(SoldsDetail.class);
+	//private static Log log = LogFactory.getLog(SoldsDetail.class);
+
 	// 获取任务ID
 	public Long getSoldTaskId(String session) throws MyException {
-		TopatsTradesSoldGetRequest req = new TopatsTradesSoldGetRequest();
-		req.setFields("tid,seller_nick,buyer_nick,title,payment,parent_id,type,status,created,orders");
-		long l = System.currentTimeMillis() / 1000 - 60 * 60 * 24 * 88;
-		String dateStart = Constants.df2.format(new Date(l * 1000));// 三个月前
-		req.setStartTime(dateStart);
-		req.setEndTime(Constants.df2.format(new Date(System.currentTimeMillis() - 1000 * 60860 * 24)));// 前一天
-		TopatsTradesSoldGetResponse response = null;
-		try {
-			response = client.execute(req, session);
-			log.info("获取任务ID："+response.getTask().getTaskId());
-			return response.getTask().getTaskId();
-		} catch (Exception e) {
-			throw new MyException("获取任务ID失败:" + response.getBody(), e);
-		}
-		// 37998611
+		TopApi topApi = new TopApi();
+		return topApi.getSoldTaskId(session);
 	}
 
 	public void getTaskResult(Long taskId) throws MyException {
-		TaobaoClient client = new DefaultTaobaoClient(Constants.URL, Constants.BACK_APP_KEY, Constants.BACK_APP_SECRET);
 		TopatsResultGetRequest req3 = new TopatsResultGetRequest();
 		req3.setTaskId(taskId);
 		TopatsResultGetResponse rsp;

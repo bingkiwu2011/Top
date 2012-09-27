@@ -12,5 +12,7 @@ public interface UsersDAO extends PagingAndSortingRepository<Users, Long>{
     
     @Query("select u from Users u order by id desc limit 10 ") 
     public List<Users> findTop10Sellers();
+    
+    public Users findByUserId(Long userId);
 }  
 

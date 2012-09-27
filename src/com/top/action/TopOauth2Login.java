@@ -25,13 +25,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.taobao.api.DefaultTaobaoClient;
-import com.taobao.api.TaobaoClient;
 import com.taobao.api.internal.util.WebUtils;
-import com.taobao.api.request.IncrementCustomerPermitRequest;
-import com.taobao.api.response.IncrementCustomerPermitResponse;
 import com.top.common.Constants;
-import com.top.dao.UsersDAO;
 import com.top.exception.MyException;
 import com.top.model.jpa.Users;
 import com.top.service.IUsersService;
@@ -122,40 +117,5 @@ public class TopOauth2Login {
 		return model;
 	}
 	
-	// 授权主动通知业务
-		private boolean permit(String appKey, String secret, String session) {
-			TaobaoClient client = new DefaultTaobaoClient(Constants.URL, appKey, secret);
-			IncrementCustomerPermitRequest permitReq = new IncrementCustomerPermitRequest();
-			/**
-			 * 指定类型，get表示此appkey可以主动通过调用taobao.increment.items.get等api获取数据，
-			 * notify表示此appkey可以通过主动推送的方式接收消息
-			 */
-			permitReq.setType("get,notify");
-			// 以下的topics和status根据自己业务所需的业务类型的消息，传入合适的值，可参考api文档。
-			/**
-			 * 指定只接收此用户的那些类型的消息，虽然在开通app的订阅消息关系的时候指定了app接收那些类型的数据，
-			 * 但是在调用taobao.increment.customer.permit接口的时候可以指定对不同的用户接收不同类型的消息
-			 * 比如：app订阅的时候指定了接收，交易，退款，商品的消息， 但是调用此接口可以指定只接收A用户的交易消息，只接收B用户的退款消息，
-			 * 如果这里没有指定的话则默认接收的消息类型和app开通时指定的消息类型是一致的
-			 */
-			permitReq.setTopics("trade;item");
-			/**
-			 * status的说明同上面的topic
-			 */
-			permitReq.setStatus("TradeSuccess;ItemUpdate");
-			try {
-				IncrementCustomerPermitResponse permitResp = client.execute(permitReq, session);
-				System.out.println(permitResp);
-				// 有两个返回值valid_session和invalid_session。valid_session表示已开通且seesion有效；invalid_session已开通但session失效，此时，无法接收该用户的消息。
-				if (permitResp != null) {
-					System.out.println(permitResp.isSuccess());
-					if (permitResp.getAppCustomer().getStatus().equals("valid_session"))
-						return true;
-				}
-				return false;
-			} catch (Exception e) {
-				e.printStackTrace();
-				return false;
-			}
-		}
+	
 }

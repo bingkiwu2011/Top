@@ -8,13 +8,11 @@
 * @date 2012-8-28 下午2:50:29 
 *@version 1.0 
 */
-package com.top.Notify;
+package com.top.api.Notify;
 
 import com.taobao.api.internal.stream.Configuration;
 import com.taobao.api.internal.stream.TopCometStream;
 import com.taobao.api.internal.stream.TopCometStreamFactory;
-import com.taobao.api.internal.stream.connect.ConnectionLifeCycleListener;
-import com.taobao.api.internal.stream.message.TopCometMessageListener;
 import com.top.common.Constants;
 
 /** 

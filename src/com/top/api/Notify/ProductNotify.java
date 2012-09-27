@@ -8,7 +8,7 @@
 * @date 2012-8-28 下午5:35:55 
 *@version 1.0 
 */
-package com.top.Notify;
+package com.top.api.Notify;
 
 import com.taobao.api.domain.NotifyItem;
 import com.taobao.api.domain.NotifyRefund;

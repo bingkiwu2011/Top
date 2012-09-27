@@ -1,14 +1,14 @@
 package com.top.action;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.top.exception.MyException;
 import com.top.model.jpa.Users;
 import com.top.service.IUsersService;
 
@@ -27,6 +28,7 @@ import com.top.service.IUsersService;
 
 @Controller
 public class UserController {
+	private static Log log = LogFactory.getLog(UserController.class);
 	@Resource
 	IUsersService usersService;
 
@@ -45,20 +47,29 @@ public class UserController {
 		return "/page/error";
 	}
 
-	// json
+	/**
+	 * @Description: 查找最新10个购买应用加入的卖家
+	 */
 	@RequestMapping("newsellers")
 	@ResponseBody
 	public List<Users> newsellers() {
 		List<Users> users = new ArrayList<Users>();
-		List<Users> users2 = usersService.findTop10Sellers();
-		Users u;
-		for(Users uu:users2){
-			u=new Users();
-			u.setUsername(uu.getUsername());
-			u.setLevel(uu.getLevel());
-			users.add(u);
+		List<Users> users2;
+		try {
+			users2 = usersService.findTop10Sellers();
+			Users u;
+			for(Users uu:users2){
+				u=new Users();
+				u.setUsername(uu.getUsername());
+				u.setLevel(uu.getLevel());
+				users.add(u);
+			}
+			return users;
+		} catch (MyException e) {
+			log.error("error newsellers",e);
+			return null;
 		}
-		return users;
+		
 
 	}
 

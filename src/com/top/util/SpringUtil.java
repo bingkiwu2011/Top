@@ -1,10 +1,9 @@
-package com.top.test;
+package com.top.util;
+
 
 
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-import com.top.service.IUsersService;
 
 
 /**
@@ -20,7 +19,7 @@ public class SpringUtil {
 	/** Spring工厂接口 */
 	private BeanFactory beanFactory = null;
 	/** Spring配置文件 */
-	private static final String SPRING_CFG = "file:WebRoot/WEB-INF/*Context.xml";
+	private static final String SPRING_CFG = "file:WebRoot/WEB-INF/applicationContext.xml";
 
 	/** 私有构造器 */
 	private SpringUtil() {
@@ -62,10 +61,4 @@ public class SpringUtil {
 		return this.getBeanFactory().getBean(beanName);
 	}
 
-	public static void main(String[] args) {
-		IUsersService i=(IUsersService)SpringUtil.getInstance().getBean("usersService");
-		//IPrizeService prizeService=(IPrizeService)SpringUtil.getInstance().getBean("prizeService");
-		
-		
-	}
 }

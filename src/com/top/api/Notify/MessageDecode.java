@@ -1,4 +1,4 @@
-package com.top.Notify;
+package com.top.api.Notify;
 
 import java.util.Map;
 
@@ -6,7 +6,6 @@ import com.taobao.api.ApiException;
 import com.taobao.api.domain.NotifyItem;
 import com.taobao.api.domain.NotifyRefund;
 import com.taobao.api.domain.NotifyTrade;
-import com.taobao.api.domain.Trade;
 import com.taobao.api.internal.parser.json.JsonConverter;
 import com.taobao.api.internal.util.json.JSONValidatingReader;
 
