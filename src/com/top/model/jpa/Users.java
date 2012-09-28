@@ -42,6 +42,12 @@ public class Users implements java.io.Serializable {
 	private Long level;
 	@Column(name = "uid", nullable = true, length = 50)
 	private String uid;
+	@Column(name = "iclass", nullable = true, precision = 4)
+	private Double iclass;
+	@Column(name = "minprice", nullable = true, precision = 10)
+	private Double minprice;
+	@Column(name = "maxprice", nullable = true, precision = 10)
+	private Double maxprice;
 
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "users")
 	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -125,6 +131,30 @@ public class Users implements java.io.Serializable {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public Double getIclass() {
+		return iclass;
+	}
+
+	public Double getMinprice() {
+		return minprice;
+	}
+
+	public Double getMaxprice() {
+		return maxprice;
+	}
+
+	public void setIclass(Double iclass) {
+		this.iclass = iclass;
+	}
+
+	public void setMinprice(Double minprice) {
+		this.minprice = minprice;
+	}
+
+	public void setMaxprice(Double maxprice) {
+		this.maxprice = maxprice;
 	}
 
 }

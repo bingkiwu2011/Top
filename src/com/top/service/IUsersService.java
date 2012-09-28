@@ -15,4 +15,6 @@ public interface IUsersService {
 	 public List<Users>findTop10Sellers()throws MyException;
 	 
 	 public Users findByUserId(Long userId)throws MyException;
+	 
+	 public Users updateUsers(Users user)throws MyException;
 }

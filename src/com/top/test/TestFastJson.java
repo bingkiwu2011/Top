@@ -2,12 +2,9 @@ package com.top.test;
 
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Arrays;  
-import java.util.List;  
-  
-import com.alibaba.fastjson.JSON;  
-import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.TypeReference;  
+import java.util.List;
+
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.taobao.api.domain.Order;
 import com.taobao.api.domain.Trade;

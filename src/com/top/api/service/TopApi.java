@@ -80,7 +80,8 @@ public class TopApi {
 	}
 
 	/**
-	 * @Description: 获取交易变更通知信息 不需呀授权
+	 * @Description: 获取交易变更通知信息 不需授权
+	 * http://api.taobao.com/apidoc/api.htm?path=categoryId:39-apiId:347
 	 */
 	public List<NotifyTrade> getIncrementTrades(String nick) throws MyException {
 		IncrementTradesGetRequest req = new IncrementTradesGetRequest();

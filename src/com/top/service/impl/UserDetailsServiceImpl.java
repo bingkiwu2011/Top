@@ -13,7 +13,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.top.dao.UsersDAO;
-import com.top.model.jpa.Authory;
 import com.top.model.jpa.Users;
 
 @Transactional(readOnly = true)

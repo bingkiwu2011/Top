@@ -49,6 +49,8 @@ public class UsersServiceImpl implements IUsersService {
 	/**
 	 * @Description: 新卖家购买应用,添加该卖家到Users表
 	 */
+	
+	@Transactional(readOnly = false)
 	public void addUsers(String sessionKey) throws MyException {
 		User user = new TopApi().getSellerUser(sessionKey);
 		Users users = new Users();
@@ -91,4 +93,7 @@ public class UsersServiceImpl implements IUsersService {
 		return usersDAO.findByUserId(userId);
 	}
 
+	public Users updateUsers(Users user)throws MyException{
+		return usersDAO.save(user);
+	}
 }

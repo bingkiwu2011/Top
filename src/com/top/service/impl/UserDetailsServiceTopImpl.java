@@ -3,7 +3,8 @@ package com.top.service.impl;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
+
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -13,18 +14,14 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.top.dao.UsersDAO;
-import com.top.model.jpa.Authory;
 import com.top.model.jpa.Users;
 
 @Transactional(readOnly = true)
 public class UserDetailsServiceTopImpl implements UserDetailsService {
 
+	@Resource
 	private UsersDAO userDao;
 
-	@Autowired
-	public void setUserDao(UsersDAO userDao) {
-		this.userDao = userDao;
-	}
 
 	/**
 	 * 获取用户Details信息的回调函数.
