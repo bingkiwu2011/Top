@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.top.dao.UsersDAO;
 import com.top.model.jpa.Users;
+import com.top.security.UserInfo;
 
 @Transactional(readOnly = true)
 public class UserDetailsServiceTopImpl implements UserDetailsService {
@@ -38,9 +39,18 @@ public class UserDetailsServiceTopImpl implements UserDetailsService {
 		boolean credentialsNonExpired = true;
 		boolean accountNonLocked = true;
 
-		UserDetails userdetails = new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), user.getEnabled() == 1 ? true : false, accountNonExpired, credentialsNonExpired, accountNonLocked, grantedAuths);
-
-		return userdetails;
+		UserInfo loginUsers= new UserInfo(user.getUsername(), user.getPassword(), user.getEnabled() == 1 ? true : false, accountNonExpired, credentialsNonExpired, accountNonLocked, grantedAuths);
+		loginUsers.setEmail(user.getEmail());
+		loginUsers.setIclass(user.getIclass());
+		loginUsers.setLevel(user.getLevel());
+		loginUsers.setMinprice(user.getMinprice());
+		loginUsers.setMaxprice(user.getMaxprice());
+		loginUsers.setName(user.getName());
+		loginUsers.setPhone(user.getPhone());
+		loginUsers.setUid(user.getUid());
+		loginUsers.setUserId(user.getUserId());
+		loginUsers.setUsername(username);
+		return loginUsers;
 	}
 
 	/**

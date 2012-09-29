@@ -29,6 +29,19 @@
 		</s:session-management>
 		<s:logout invalidate-session="true" logout-url="/logout" logout-success-url="/index"/>
 	</s:http>
+	
+	<!--认证成功 authentication-success-handler-ref="successHandler"-->  
+    <bean id="successHandler"  
+        class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">  
+        <property name="defaultTargetUrl" value="/tradetest" />  
+        <property name="alwaysUseDefaultTargetUrl" value="false" />  
+    </bean> 
+     <!-- 认证失败 -->  
+    <bean id="failureHandler"  
+        class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">  
+        <property name="defaultFailureUrl" value="/index" />  
+    </bean>
+	
 	<bean id="messageSource"
 		class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
 		<property name="basename" value="classpath:messages_zh_CN"></property>

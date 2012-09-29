@@ -14,6 +14,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +34,7 @@ public class TradeServiceImpl implements ITradeService {
 	@Resource
 	private CustomerDAO customerDAO;
 
+	@Cacheable(value = { "true" })
 	public List<Trade> getTradesBySellerNick(String nick) throws MyException {
 		return tradeDAO.getTradesBySellerNick(nick);
 	}

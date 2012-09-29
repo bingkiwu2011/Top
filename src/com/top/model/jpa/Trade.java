@@ -2,16 +2,22 @@ package com.top.model.jpa;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import com.taobao.api.TaobaoObject;
 
 @Entity
+@Cacheable
 @Table(name = "trade", catalog = "top")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Trade extends TaobaoObject {
 
 	private static final long serialVersionUID = 8378333577157646774L;

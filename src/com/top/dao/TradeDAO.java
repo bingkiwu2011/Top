@@ -15,6 +15,8 @@ public interface TradeDAO extends PagingAndSortingRepository<Trade, Long>{
 	@Query("select t from Trade t where buyerNick=?1")
 	public List<Trade>getTradesByBuyerNick(String nick)throws MyException;
 	
+	//public Trade findById(int id);
+	
 	
 }  
 

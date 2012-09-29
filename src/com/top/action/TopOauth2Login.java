@@ -57,7 +57,6 @@ public class TopOauth2Login {
 				return model;
 			} catch (Exception e) {
 				log.error("error front login",e);
-				e.printStackTrace();
 			}
 		}
 		model.setViewName("/common/error");
@@ -71,13 +70,14 @@ public class TopOauth2Login {
 		Map<String, String> param = new HashMap<String, String>();
 		param.put("grant_type", "authorization_code");
 		param.put("code",req.getParameter("code"));
+		if(req.getParameter("code")==null||req.getParameter("code").length()<=0){
+			throw new MyException("TOP授权码异常!");
+		}
 		param.put("client_id", Constants.BACK_APP_KEY);
 		param.put("client_secret", Constants.BACK_APP_SECRET);
 		param.put("redirect_uri", Constants.redirectUrlPrefix);
 		param.put("scope", "item");
-		if(req.getParameter("code")==null||req.getParameter("code").length()<=0){
-			throw new MyException("error authorize code!");
-		}
+		
 		String responseJson="";
 		try {
 			responseJson = WebUtils.doPost("https://oauth.taobao.com/token", param, 3000, 3000);
@@ -95,7 +95,9 @@ public class TopOauth2Login {
 				}
 				model.addObject("j_username", user.getUsername());
 				model.addObject("j_password", ThreeDESCode.encryptThreeDESECB(user.getUsername()));
-				/*model.addObject("salt", "hellobingki");//添加salt ，防止浏览器直接登录
+				
+				//model.addObject("salt", "hellobingki");//添加salt ，防止浏览器直接登录
+				/*
 				if (permit(Constants.BACK_APP_KEY, Constants.BACK_APP_SECRET, jsonObject.getString("access_token"))) {
 					System.out.println("主动通知业务授权成功!");
 
@@ -104,12 +106,10 @@ public class TopOauth2Login {
 					System.out.println("主动通知业务授权失败!");
 				}*/
 			}
-			
 			model.setViewName("rediretlogin");
 			return model;
 		} catch (Exception e1) {
 			log.error(e1);
-			e1.printStackTrace();
 		}
 		//http://bingki.vicp.net:8081/Top/j_spring_security_check?j_password=unused&j_username=bingki
 		//http://bingki.vicp.net:8081/Top/j_spring_security_check?j_password=1&j_username=amadeus

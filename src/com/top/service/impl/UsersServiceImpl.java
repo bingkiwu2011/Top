@@ -62,10 +62,11 @@ public class UsersServiceImpl implements IUsersService {
 			e.printStackTrace();
 		}
 		users.setUserId(user.getUserId());
-		users.setLevel(user.getSellerCredit().getLevel());
+		users.setLevel(user.getSellerCredit().getScore());
 		users.setEnabled(1);
 		users.setUid(user.getUid());
-
+		users.setName(user.getNick());
+		users.setEmail(user.getEmail());
 		Authory authory = new Authory();
 		Role role = new Role();
 		role.setId(3);//卖家 role

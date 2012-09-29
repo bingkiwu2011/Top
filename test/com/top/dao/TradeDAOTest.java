@@ -10,15 +10,19 @@
 */
 package com.top.dao;
 
-import static org.junit.Assert.*;
-
 import javax.annotation.Resource;
 
+
+
+import org.hibernate.Query;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import com.top.exception.MyException;
 
 /** 
  * @ClassName: TradeDAOTest 
@@ -26,7 +30,8 @@ import org.springframework.test.context.ContextConfiguration;
  * @author bingki 
  * @date 2012-9-28 下午2:16:01  
  */
-@ContextConfiguration(locations = { "/applicationContext.xml" })
+@RunWith(SpringJUnit4ClassRunner.class)  
+@ContextConfiguration(locations = { "/test2Context.xml" })
 public class TradeDAOTest  {
 	@Resource
 	private TradeDAO tradeDAO;
@@ -48,7 +53,7 @@ public class TradeDAOTest  {
 
 	@Test
 	public void test() {
-		System.out.println(tradeDAO);
+		
 	}
 
 }

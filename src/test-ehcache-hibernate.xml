@@ -16,6 +16,12 @@
 		maxEntriesLocalDisk="100000" />
 
 
+
+	<cache name="com.top.model.jpa.Trade" maxElementsInMemory="1000">
+		<cacheEventListenerFactory
+			class="net.sf.ehcache.distribution.RMICacheReplicatorFactory"
+			roperties="replicatePuts=false,replicateUpdatesViaCopy=false" />
+	</cache>
 	<!-- Special objects setting. -->
 	<cache name="com.top.model.jpa.Users" maxEntriesLocalHeap="1000"
 		eternal="true" overflowToDisk="true" maxEntriesLocalDisk="10000" />
@@ -25,8 +31,6 @@
 		eternal="true" overflowToDisk="true" maxEntriesLocalDisk="1000" />
 
 	<cache name="com.top.model.jpa.Customer" maxEntriesLocalHeap="100"
-		eternal="true" overflowToDisk="true" maxEntriesLocalDisk="1000" />
-	<cache name="com.top.model.jpa.Trade" maxEntriesLocalHeap="100"
 		eternal="true" overflowToDisk="true" maxEntriesLocalDisk="1000" />
 	<cache name="com.top.model.jpa.Duihuan" maxEntriesLocalHeap="100"
 		eternal="true" overflowToDisk="true" maxEntriesLocalDisk="1000" />

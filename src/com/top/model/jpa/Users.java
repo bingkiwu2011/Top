@@ -1,18 +1,12 @@
 package com.top.model.jpa;
 
-import static javax.persistence.GenerationType.IDENTITY;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 /**
  * Users entity. @author MyEclipse Persistence Tools
@@ -22,10 +16,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 public class Users implements java.io.Serializable {
 
 	private static final long serialVersionUID = -5740016950903957915L;
+	
 	@Id
-	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "id", unique = true, nullable = false)
-	private Integer id;
 	@Column(name = "user_id", unique = true, nullable = false)
 	private Long userId;
 	@Column(name = "username", nullable = false, length = 30)
@@ -40,6 +32,8 @@ public class Users implements java.io.Serializable {
 	private Integer enabled;
 	@Column(name = "level", nullable = false)
 	private Long level;
+	@Column(name = "email",nullable = true, length = 50)
+	private String email;
 	@Column(name = "uid", nullable = true, length = 50)
 	private String uid;
 	@Column(name = "iclass", nullable = true, precision = 4)
@@ -50,7 +44,6 @@ public class Users implements java.io.Serializable {
 	private Double maxprice;
 
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "users")
-	@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 	private Authory authory;
 
 	public Long getUserId() {
@@ -125,14 +118,6 @@ public class Users implements java.io.Serializable {
 		this.uid = uid;
 	}
 
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
 	public Double getIclass() {
 		return iclass;
 	}
@@ -155,6 +140,14 @@ public class Users implements java.io.Serializable {
 
 	public void setMaxprice(Double maxprice) {
 		this.maxprice = maxprice;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -52,6 +53,7 @@ public class UserController {
 	 */
 	@RequestMapping("newsellers")
 	@ResponseBody
+	@RolesAllowed({ "ROLE_SELLER" })
 	public List<Users> newsellers() {
 		List<Users> users = new ArrayList<Users>();
 		List<Users> users2;
